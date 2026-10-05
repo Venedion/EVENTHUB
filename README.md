@@ -21,7 +21,7 @@ Halaman web front-end untuk menampilkan informasi workshop dan menerima pendafta
 - JavaScript dasar (`script.js`) tanpa framework tambahan
 - Google Fonts: Space Grotesk dan Inter
 
-## Struktur Berkas
+## Struktur Folder Proyek
 
 ```
 eventhub/
@@ -31,11 +31,36 @@ eventhub/
 └── README.md
 ```
 
-| Berkas | Isi |
-|---|---|
-| `index.html` | Struktur halaman, formulir, dan kerangka ringkasan |
-| `style.css` | Desain visual, layout, dan media query |
-| `script.js` | Validasi form, perhitungan biaya, dan pembuatan ringkasan |
+| Berkas | Peran | Isi |
+|---|---|---|
+| `index.html` | Struktur (HTML) | Kerangka halaman, formulir, dan wadah ringkasan |
+| `style.css` | Tampilan (CSS) | Desain visual, layout, dan media query |
+| `script.js` | Perilaku (JavaScript) | Validasi form, perhitungan biaya, dan pembuatan ringkasan |
+| `README.md` | Dokumentasi | Penjelasan proyek |
+
+Proyek ini hanya terdiri dari berkas statis dan semuanya berada di satu folder. `index.html` memanggil `style.css` dan `script.js` lewat nama berkasnya, jadi ketiganya harus tetap berada di folder yang sama.
+
+## Alur Dasar Browser → Web Server → Response
+
+1. **Request:** pengguna membuka alamat halaman. Browser mengirim permintaan HTTP `GET` ke web server untuk meminta `index.html`.
+2. **Response:** web server mengirim kembali isi `index.html` sebagai response (status `200 OK`).
+3. **Parsing:** browser membaca HTML dari atas ke bawah. Setiap menemukan `<link>` atau `<script>`, browser mengirim request baru, yaitu ke `style.css` dan `script.js` di server yang sama, serta ke CDN untuk Bootstrap dan Google Fonts.
+4. **Render:** setelah semua sumber diterima, browser menyusun tampilan halaman dari HTML dan CSS, lalu menjalankan JavaScript.
+5. **Interaksi:** saat formulir dikirim, `script.js` berjalan langsung di browser untuk memvalidasi data, menghitung biaya, dan menampilkan ringkasan. Pada tahap ini tidak ada request baru ke server.
+
+```
+Browser ── GET index.html ───────────▶ Web Server
+Browser ◀─ 200 OK + isi HTML ──────── Web Server
+Browser ── GET style.css, script.js ─▶ Web Server
+Browser ── GET Bootstrap, Fonts ─────▶ CDN
+Browser ◀─ berkas yang diminta ─────── Web Server / CDN
+Browser: render halaman, jalankan JavaScript, proses form di sisi klien
+```
+
+Catatan:
+
+- Jika `index.html` dibuka langsung dengan klik ganda, browser membaca berkas dari komputer lewat `file://` tanpa web server. Alur render dan JavaScript-nya sama, hanya langkah request ke server yang digantikan pembacaan berkas lokal.
+- Karena pengiriman formulir selalu dicegah oleh `preventDefault()`, data pendaftaran tidak dikirim ke server. Untuk menyimpan data, formulir perlu dihubungkan ke back-end yang menangani alamat `/daftar`.
 
 ## Cara Menjalankan
 
