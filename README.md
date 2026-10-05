@@ -155,4 +155,3 @@ Logika form dan perhitungan biaya diuji dengan simulasi browser (jsdom), mencaku
 - tombol Reset menyembunyikan ringkasan dan menghapus pesan kesalahan
 - tidak ada error JavaScript pada console
 
-Sebelum dikumpulkan, disarankan membuka `index.html` di browser dan memeriksa tab Console (F12) sekali lagi.
