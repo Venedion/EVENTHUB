@@ -662,6 +662,31 @@ button:focus-visible {
   color: var(--eh-primary-dark);
 }
 
+.eh-rules {
+  margin-top: 1rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--eh-line);
+  border-radius: 12px;
+  background: var(--eh-surface);
+  font-size: 0.9rem;
+  color: var(--eh-ink-soft);
+}
+
+.eh-rules summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--eh-primary-dark);
+}
+
+.eh-rules summary:hover,
+.eh-rules summary:focus-visible {
+  color: var(--eh-accent-dark);
+}
+
+.eh-rules #ketentuan-biaya {
+  margin-top: 0.75rem;
+}
+
 .eh-footer {
   padding: 3rem 0 1.5rem;
   background: var(--eh-ink);

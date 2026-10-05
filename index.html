@@ -128,7 +128,7 @@
                 <ul class="eh-meta">
                   <li><span>Level</span><strong>Pemula</strong></li>
                   <li><span>Durasi</span><strong>6 jam</strong></li>
-                  <li><span>Pemateri</span><strong>Rina Kusuma</strong></li>
+                  <li><span>Pemateri</span><strong>Mangasa Manullang</strong></li>
                   <li><span>Kuota</span><strong>40 peserta</strong></li>
                 </ul>
               </div>
@@ -148,7 +148,7 @@
                 <ul class="eh-meta">
                   <li><span>Level</span><strong>Pemula - Menengah</strong></li>
                   <li><span>Durasi</span><strong>6 jam</strong></li>
-                  <li><span>Pemateri</span><strong>Dimas Pratama</strong></li>
+                  <li><span>Pemateri</span><strong>Tetti</strong></li>
                   <li><span>Kuota</span><strong>35 peserta</strong></li>
                 </ul>
               </div>
@@ -168,7 +168,7 @@
                 <ul class="eh-meta">
                   <li><span>Level</span><strong>Pemula</strong></li>
                   <li><span>Durasi</span><strong>6 jam</strong></li>
-                  <li><span>Pemateri</span><strong>Alya Rahmawati</strong></li>
+                  <li><span>Pemateri</span><strong>Wenripin</strong></li>
                   <li><span>Kuota</span><strong>30 peserta</strong></li>
                 </ul>
               </div>
@@ -342,15 +342,15 @@
                 <legend>Pilihan Workshop (minimal satu)</legend>
                 <div class="eh-options">
                   <div class="eh-option">
-                    <input class="form-check-input" type="checkbox" id="ws-frontend" name="workshop" value="Front-End Web" data-harga="150000">
+                    <input class="form-check-input" type="checkbox" id="ws-frontend" name="workshop" value="Front-End Web">
                     <label class="form-check-label" for="ws-frontend"><span>Front-End Web</span><span class="eh-option-price">Rp150.000</span></label>
                   </div>
                   <div class="eh-option">
-                    <input class="form-check-input" type="checkbox" id="ws-uiux" name="workshop" value="UI/UX Design" data-harga="150000">
+                    <input class="form-check-input" type="checkbox" id="ws-uiux" name="workshop" value="UI/UX Design">
                     <label class="form-check-label" for="ws-uiux"><span>UI/UX Design</span><span class="eh-option-price">Rp150.000</span></label>
                   </div>
                   <div class="eh-option">
-                    <input class="form-check-input" type="checkbox" id="ws-cyber" name="workshop" value="Cybersecurity Dasar" data-harga="175000">
+                    <input class="form-check-input" type="checkbox" id="ws-cyber" name="workshop" value="Cybersecurity Dasar">
                     <label class="form-check-label" for="ws-cyber"><span>Cybersecurity Dasar</span><span class="eh-option-price">Rp175.000</span></label>
                   </div>
                 </div>
@@ -403,10 +403,22 @@
                   <dd class="col-sm-7" id="out-workshop"></dd>
                   <dt class="col-sm-5">Jumlah Tiket</dt>
                   <dd class="col-sm-7" id="out-jumlah"></dd>
+                  <dt class="col-sm-5">Subtotal</dt>
+                  <dd class="col-sm-7" id="out-subtotal"></dd>
+                  <dt class="col-sm-5">Diskon Tipe Peserta</dt>
+                  <dd class="col-sm-7" id="out-diskon-tipe"></dd>
+                  <dt class="col-sm-5">Diskon Paket</dt>
+                  <dd class="col-sm-7" id="out-diskon-paket"></dd>
+                  <dt class="col-sm-5">Biaya Admin</dt>
+                  <dd class="col-sm-7" id="out-admin"></dd>
                   <dt class="col-sm-5">Total Biaya</dt>
                   <dd class="col-sm-7 eh-total" id="out-total"></dd>
                 </dl>
               </div>
+              <details class="eh-rules">
+                <summary>Lihat ketentuan biaya</summary>
+                <div id="ketentuan-biaya"></div>
+              </details>
             </div>
           </section>
 
@@ -437,147 +449,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-  <script>
-    (function () {
-      var form = document.getElementById('form-pendaftaran');
-      var hp = document.getElementById('hp');
-      var jumlah = document.getElementById('jumlah');
-
-      function show(id, message) {
-        var out = document.getElementById('err-' + id);
-        var field = document.getElementById(id);
-        out.textContent = message;
-        if (field) {
-          field.setCustomValidity(message);
-          field.setAttribute('aria-invalid', message ? 'true' : 'false');
-        }
-        return message === '';
-      }
-
-      var validators = {
-        nama: function () {
-          var v = document.getElementById('nama').value.trim();
-          if (!v) return show('nama', 'Nama wajib diisi.');
-          if (v.length < 3) return show('nama', 'Nama minimal 3 karakter.');
-          if (v.length > 60) return show('nama', 'Nama maksimal 60 karakter.');
-          if (!/^[A-Za-z .'\-]+$/.test(v)) return show('nama', 'Nama hanya boleh berisi huruf, spasi, titik, apostrof, dan tanda hubung.');
-          return show('nama', '');
-        },
-        email: function () {
-          var v = document.getElementById('email').value.trim();
-          if (!v) return show('email', 'Email wajib diisi.');
-          if (v.length > 100) return show('email', 'Email maksimal 100 karakter.');
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return show('email', 'Format email tidak valid. Contoh: nama@email.com');
-          return show('email', '');
-        },
-        hp: function () {
-          var v = hp.value;
-          if (!v) return show('hp', 'Nomor HP wajib diisi.');
-          if (!/^\d+$/.test(v)) return show('hp', 'Nomor HP hanya boleh berisi angka.');
-          if (v.indexOf('08') !== 0) return show('hp', 'Nomor HP harus diawali 08.');
-          if (v.length < 10 || v.length > 13) return show('hp', 'Nomor HP harus 10 sampai 13 digit.');
-          return show('hp', '');
-        },
-        institusi: function () {
-          var v = document.getElementById('institusi').value.trim();
-          if (v && v.length < 3) return show('institusi', 'Nama institusi minimal 3 karakter.');
-          if (v.length > 60) return show('institusi', 'Nama institusi maksimal 60 karakter.');
-          return show('institusi', '');
-        },
-        tipe: function () {
-          var ok = form.querySelector('input[name="tipe"]:checked') !== null;
-          return show('tipe', ok ? '' : 'Pilih salah satu tipe peserta.');
-        },
-        tanggal: function () {
-          var el = document.getElementById('tanggal');
-          if (!el.value) return show('tanggal', 'Tanggal hadir wajib diisi.');
-          if (el.value < el.min || el.value > el.max) return show('tanggal', 'Tanggal harus antara 20 dan 22 Oktober 2026.');
-          return show('tanggal', '');
-        },
-        sesi: function () {
-          var v = document.getElementById('sesi').value;
-          if (!v) return show('sesi', 'Pilih sesi terlebih dahulu.');
-          return show('sesi', '');
-        },
-        jumlah: function () {
-          var v = jumlah.value;
-          if (v === '') return show('jumlah', 'Jumlah tiket wajib diisi.');
-          if (!/^\d+$/.test(v)) return show('jumlah', 'Jumlah tiket harus berupa bilangan bulat.');
-          if (Number(v) < 1 || Number(v) > 5) return show('jumlah', 'Jumlah tiket harus antara 1 dan 5.');
-          return show('jumlah', '');
-        },
-        workshop: function () {
-          var ok = form.querySelectorAll('input[name="workshop"]:checked').length > 0;
-          return show('workshop', ok ? '' : 'Pilih minimal satu workshop.');
-        },
-        catatan: function () {
-          var v = document.getElementById('catatan').value;
-          if (v.length > 200) return show('catatan', 'Catatan maksimal 200 karakter.');
-          return show('catatan', '');
-        },
-        setuju: function () {
-          var ok = document.getElementById('setuju').checked;
-          return show('setuju', ok ? '' : 'Anda harus menyetujui pernyataan ini.');
-        }
-      };
-
-      var order = ['nama', 'email', 'hp', 'institusi', 'tipe', 'tanggal', 'sesi', 'jumlah', 'workshop', 'catatan', 'setuju'];
-
-      function bind(id, events) {
-        events.forEach(function (name) {
-          var targets = id === 'tipe' ? form.querySelectorAll('input[name="tipe"]')
-            : id === 'workshop' ? form.querySelectorAll('input[name="workshop"]')
-            : [document.getElementById(id)];
-          Array.prototype.forEach.call(targets, function (el) {
-            el.addEventListener(name, function () {
-              if (name === 'input' && !document.getElementById('err-' + id).textContent) return;
-              validators[id]();
-            });
-          });
-        });
-      }
-
-      ['nama', 'email', 'hp', 'institusi', 'tanggal', 'jumlah', 'catatan'].forEach(function (id) {
-        bind(id, ['blur', 'input']);
-      });
-      ['sesi', 'tanggal', 'tipe', 'workshop', 'setuju'].forEach(function (id) {
-        bind(id, ['change']);
-      });
-
-      hp.addEventListener('beforeinput', function (e) {
-        if (e.data && /\D/.test(e.data)) e.preventDefault();
-      });
-
-      hp.addEventListener('input', function () {
-        var clean = hp.value.replace(/\D/g, '').slice(0, 13);
-        if (hp.value !== clean) hp.value = clean;
-      });
-
-      jumlah.addEventListener('keydown', function (e) {
-        if (['e', 'E', '+', '-', '.', ','].indexOf(e.key) !== -1) e.preventDefault();
-      });
-
-      form.addEventListener('submit', function (e) {
-        var firstInvalid = null;
-        order.forEach(function (id) {
-          if (!validators[id]() && !firstInvalid) firstInvalid = id;
-        });
-        if (firstInvalid) {
-          e.preventDefault();
-          var target = firstInvalid === 'tipe' ? form.querySelector('input[name="tipe"]')
-            : firstInvalid === 'workshop' ? form.querySelector('input[name="workshop"]')
-            : document.getElementById(firstInvalid);
-          target.focus();
-        }
-      });
-
-      form.addEventListener('reset', function () {
-        order.forEach(function (id) {
-          show(id, '');
-        });
-      });
-    })();
-  </script>
+  <script src="script.js" defer></script>
 
 </body>
 </html>
